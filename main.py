@@ -1,13 +1,28 @@
 #Python script to fetch current playing song from spotify and get the lyrics for it in realtime - (later: timestamped lyrics with text highlighting)
 
 import requests, json, lyricsgenius, time
+from SwSpotify import spotify
 songName=""
 artistName=""
 
-def getSongDetails():
+def getSongDetailsLocal(genius):
   global songName
   global artistName
-  genius = lyricsgenius.Genius('ST540RZjbOoyjRaWTEYM-cQOT53PsAUkDEqjXS1psR-QVZpPsJmChX_fTaxnFOSV')
+  try:
+    if spotify.song() != songName:
+      songName=spotify.song()
+      artistName=spotify.artist()
+    getLyrics(songName, artistName, genius)
+  except:
+    print("SORRY, THE LYRICS ARE NOT AVIALBLE FOR THIS SONG")
+
+def getLyrics(songName, artistName, genius):
+  song = genius.search_song(songName, artistName)
+  print("==================================\n"+songName, artistName+"\n"+song.lyrics)
+
+def getSongDetails(genius): #this function requires the Bearer Token to be generated every hour - https://developer.spotify.com/console/get-users-currently-playing-track/?market=&additional_types=
+  global songName
+  global artistName
 
   url = "https://api.spotify.com/v1/me/player/currently-playing"
 
@@ -31,13 +46,11 @@ def getSongDetails():
 
 
 
-def getLyrics(songName, artistName, genius):
-  song = genius.search_song(songName, artistName)
-  print("==================================\n"+songName, artistName+"\n"+song.lyrics)
-
 if __name__=='__main__':
+  genius = lyricsgenius.Genius('ST540RZjbOoyjRaWTEYM-cQOT53PsAUkDEqjXS1psR-QVZpPsJmChX_fTaxnFOSV')
   while True:
-    getSongDetails()
+    # getSongDetails(genius)
+    getSongDetailsLocal(genius)
     time.sleep(5)
 
 
