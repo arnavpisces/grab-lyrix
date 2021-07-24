@@ -13,7 +13,7 @@ def getSongDetails():
 
   payload={}
   headers = {
-    'Authorization': 'Bearer BQDb7skcTRBfg-dzNAoBB1qfeNXlboYCax_UOR5v90UhJLDH9dNtAexWFi2_Zp0UdgYvoM2FH21kwHcUbnOiasbr5dSs4njLuT2-EBKlDnmHcdCbKo246ReSThfQvvr10-y6mdiX-LSYxW7xrGg1CcATNyPii-8AyH2iGXRgHv6MPYpKY3mUMvYc7A'
+    'Authorization': 'Bearer BQASidhB-68CEQBL94zTwpSCnJ_VwfVNWFI8ZIR_jIyJ8g9UIqDwlg8ZYk60tSfZ8xH1UydpqTsR3HaDiF06LHhCL5nGUbYimL8JlauQETMYn_pdr2nq_ugA6a7UigqvrnsBpeFhqw5htRnGuKXZEHVe0aqBpuGbShTwccmTRL6-EAHYPl6qNLsUPw'
   }
   response = requests.request("GET", url, headers=headers, data=payload)
   # print(response)
@@ -22,13 +22,13 @@ def getSongDetails():
   # print(responseParams["item"].keys())
   try:
     if responseParams["item"]["name"] != songName:
+      print(songName, artistName)
       songName = responseParams["item"]["name"]
       artistName = responseParams["item"]["artists"][0]["name"]
       getLyrics(songName, artistName, genius)
   except:
     print("SORRY, THE LYRICS ARE NOT AVIALBLE FOR THIS SONG")
 
-  # print(songName, artistName)
 
 
 def getLyrics(songName, artistName, genius):
